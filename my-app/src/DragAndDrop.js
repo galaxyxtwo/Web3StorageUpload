@@ -12,7 +12,7 @@ export default function DragAndDrop({ setFile }) {
   };
 
   return (
-    <div onDrop={onDrop} onDragOver={onDragOver} style={{ border: '2px dashed black', height: '200px', width: '200px' }}>
+    <div onDrop={onDrop} onDragOver={onDragOver} style={{ border: '2px solid black', height: '400px', width: '400px' }}>
       Drop file here
     </div>
   );
