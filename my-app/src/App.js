@@ -1,5 +1,5 @@
 // App.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DragAndDrop from './DragAndDrop';
 import { getStorageClient } from './Web3Client';
 import './styles.css';
@@ -7,9 +7,22 @@ import './styles.css';
 function App() {
   const [file, setFile] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('Not started');
-  const [cids, setCids] = useState([]);
+  const [cids, setCids] = useState(() => {
+    const savedCids = localStorage.getItem('cids');
+    return savedCids ? JSON.parse(savedCids) : [];
+  });
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem('cids', JSON.stringify(cids));
+  }, [cids]);
 
   async function uploadFile() {
+    if (!file) {
+      setError('Please drop a file before uploading.');
+      return;
+    }
+    setError('');
     setUploadStatus('Uploading...');
     const client = getStorageClient();
     const cid = await client.put([file]);
@@ -30,6 +43,7 @@ function App() {
       <button className="upload-button" onClick={uploadFile}>
         Upload to IPFS
       </button>
+      {error && <p className="error-message">{error}</p>}
       <ul className="cid-list">
         {cids.map((cid, index) => (
           <li key={index}>
