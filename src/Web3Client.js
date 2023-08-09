@@ -2,6 +2,6 @@
 import { Web3Storage } from 'web3.storage';
 
 export function getStorageClient() {
-  const token = 'apiKey';
+  const token = 'web3storagekey';
   return new Web3Storage({ token });
 }
